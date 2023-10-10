@@ -4,7 +4,7 @@
         Lucas Gabriel
         Santiago Cardoso
 
-    Primeira etapa do trabalho final da disciplina de Linguagens Formais e Autômatos (LFA), feito na linguagem de programação C, um código de simulação de autômatos com pilha.
+    Trabalho final da disciplina de Linguagens Formais e Autômatos (LFA), feito na linguagem de programação Python.
 
     Execução:
-        gcc sap.c && ./a.out
+        python3 sap.py
