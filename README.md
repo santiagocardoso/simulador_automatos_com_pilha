@@ -1,8 +1,8 @@
 # Simulador de Autômatos com Pilha (SAP)
 
     Alunos:
-        Lucas Gabriel
         Santiago Cardoso
+        Lucas Gabriel
 
     Trabalho final da disciplina de Linguagens Formais e Autômatos (LFA), feito na linguagem de programação Python.
 
