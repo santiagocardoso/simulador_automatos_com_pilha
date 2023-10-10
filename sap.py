@@ -2,8 +2,8 @@
     Trabalho final de LFA
 
     Alunos:
-        Lucas Gabriel
         Santiago Cardoso
+        Lucas Gabriel
 '''
 
 alfabeto = ['a', 'b']
