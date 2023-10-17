@@ -19,6 +19,7 @@ class Estado:
         self.nome = nome
         self.Transicoes = Transicoes
 
+
 entrada = "abbcbba"
 pilha = [""]
 vazio = ""
