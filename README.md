@@ -1,7 +1,7 @@
 # Pushdown Automata (PDA)
 
-Members:
-    Santiago Cardoso
+Members:  
+    Santiago Cardoso  
     Lucas Gabriel
 
 Final work of the Linguagens Formais e Autômatos ​​(LFA) discipline, done in the Python programming language.
@@ -47,5 +47,5 @@ Create a JSON file with the following example:
 }
 ```
 
-Execution:
+Execution:  
     python3 pda.py
