@@ -6,6 +6,10 @@ Members:
 
 Final work of the Linguagens Formais e Autômatos ​​(LFA) discipline, done in the Python programming language.
 
+```
+$ git clone https://github.com/santiagocardoso/simulador_automatos_com_pilha.git
+```
+
 Create a JSON file with the following example:
 ```json
 {
