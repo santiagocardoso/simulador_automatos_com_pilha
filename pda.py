@@ -154,6 +154,31 @@ with open('automaton.json', 'r') as file:
         if state.get_name() == data["final"]: # Still is only one state, it needs to be a list of final states
             final_states = state
 
+def format_transition(transition):
+    symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
+    symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
+    symbol_push = "ε" if transition.symbol_push == "" else transition.symbol_push
+    return f'{symbol_read},{symbol_top_pull},{symbol_push}'
+
+def generate_dot_format(states, start_state, final_states):
+    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', 'node [shape = doublecircle];', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
+
+    for state in states:
+        for transition in state.get_transitions():
+            next_state = transition.state
+            label = format_transition(transition)
+
+            dot.append(f'{state.get_name()} -> {next_state} [label = "{label}"];')
+
+    dot.append('}')
+
+    return '\n'.join(dot)
+
+# Assuming you have already defined start_state, states, and final_states
+dot_format = generate_dot_format(states, start_state, final_states)
+print(dot_format)
+
+
 # Create the automaton
 automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
 automaton.read_input()
