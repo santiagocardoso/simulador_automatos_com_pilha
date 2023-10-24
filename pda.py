@@ -117,8 +117,6 @@ class AutomatonStack:
             return
 
 # Read JSON file
-import json
-
 with open('automaton.json', 'r') as file:
     data = json.load(file)
     states_data = data["pda"]["states"]
@@ -154,6 +152,7 @@ with open('automaton.json', 'r') as file:
         if state.get_name() == data["final"]: # Still is only one state, it needs to be a list of final states
             final_states = state
 
+# Write DOT file
 def format_transition(transition):
     symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
     symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
@@ -177,7 +176,6 @@ def generate_dot_format(states, start_state, final_states):
 # Assuming you have already defined start_state, states, and final_states
 dot_format = generate_dot_format(states, start_state, final_states)
 print(dot_format)
-
 
 # Create the automaton
 automaton = AutomatonStack(start_state, states, final_states, input_string, stack)

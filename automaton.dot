@@ -1,0 +1,15 @@
+digraph G {
+rankdir=LR;
+size = "8.5"
+
+node [shape = doublecircle];s1;
+node [shape = none]; qi
+node [shape = circle];
+
+qi-> s0;
+s0 -> s0 [label = "a,ε,a"];
+s0 -> s0 [label = "b,ε,b"];
+s0 -> s1 [label = "ε,ε,ε"];
+s1 -> s1 [label = "a,a,ε"];
+s1 -> s1 [label = "b,b,ε"];
+}
