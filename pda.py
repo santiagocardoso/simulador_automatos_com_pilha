@@ -161,7 +161,7 @@ def format_transition(transition):
     return f'{symbol_read},{symbol_top_pull},{symbol_push}'
 
 def generate_dot_format(states, start_state, final_states):
-    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', 'node [shape = doublecircle];', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
+    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', f'node [shape = doublecircle];{final_states.get_name()};', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
 
     for state in states:
         for transition in state.get_transitions():
