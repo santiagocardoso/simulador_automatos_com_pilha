@@ -9,9 +9,14 @@ Members:
 # Imports
 import sys
 import json
+import time
+import keyboard 
 
 # Recustion limit
 sys.setrecursionlimit(4000)
+
+# Set json file to open
+automaton_input = "automaton1.json"
 
 # Classes
 class Transition:
@@ -55,7 +60,7 @@ class AutomatonStack:
     def read_input(self):
         current_transitions = self.start_state.transitions
         count_letters = 0
-        print(f"start stack = {self.stack}")
+        print(f"Start stack = {self.stack}")
 
         for letter in self.input:
             
@@ -69,7 +74,7 @@ class AutomatonStack:
 
             if empty_movement:
                 print("-------------------------------")
-                print(f"empty movement\n")
+                print(f"Empty movement!\n")
                 
                 
                 new_input = self.input[count_letters - 1:]
@@ -83,7 +88,7 @@ class AutomatonStack:
                 new_automaton.read_input()
                 
                 if(new_automaton.accept == False):
-                    print("stack deleted")
+                    print("Stack deleted!")
                     
                 print(f"-------------------------------\n")
 
@@ -105,7 +110,7 @@ class AutomatonStack:
 
                 elif len(self.stack) == 0 and transition.symbol_top_pull != "":
                     print(f"{transition.state}\nletter read = {letter}")
-                    print(f"stack = {self.stack}\n")
+                    print(f"Stack = {self.stack}\n")
                     return
                 
 
@@ -122,11 +127,11 @@ class AutomatonStack:
 
                 elif transition == current_transitions[-1]:
                     print(f"{transition.state}\nletter read = {letter}")
-                    print(f"stack = {self.stack}\n")
+                    print(f"Stack = {self.stack}\n")
                     return
                 
             print(f"{transition.state}\nletter read = {letter}")
-            print(f"stack = {self.stack}\n")
+            print(f"Stack = {self.stack}\n")
 
             next_state = transition.state
             for state in self.states:
@@ -140,7 +145,7 @@ class AutomatonStack:
             return
 
 # Read JSON file
-with open('automaton.json', 'r') as file:
+with open(automaton_input, 'r') as file:
     data = json.load(file)
     states_data = data["pda"]["states"]
     stack = []
@@ -215,14 +220,11 @@ if(automaton.accept == False):
     print("Word denied!")
 
 # Opening the website
-import time
-import keyboard 
-
 keyboard.press_and_release('win+r')
-time.sleep(1)  # Wait for the dialog box "executar" to show up
+time.sleep(1) # Wait for the dialog box "executar" to show up
 keyboard.write('msedge')
 keyboard.press_and_release('enter')
-time.sleep(2)  # Wait for Edge to open
+time.sleep(2) # Wait for Edge to open
 
 # Type the URL link and press enter
 link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
