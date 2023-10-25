@@ -10,7 +10,7 @@ Members:
 import sys
 import json
 
-# Recustion limit
+# Recursion limit
 sys.setrecursionlimit(4000)
 
 # Classes
