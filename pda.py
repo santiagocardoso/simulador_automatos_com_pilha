@@ -105,7 +105,7 @@ class AutomatonStack:
 
                 elif len(self.stack) == 0 and transition.symbol_top_pull != "":
                     print(f"{transition.state}\nletter read = {letter}")
-                    print(f"stack = {self.stack}")
+                    print(f"stack = {self.stack}\n")
                     return
                 
 
@@ -122,11 +122,11 @@ class AutomatonStack:
 
                 elif transition == current_transitions[-1]:
                     print(f"{transition.state}\nletter read = {letter}")
-                    print(f"stack = {self.stack}")
+                    print(f"stack = {self.stack}\n")
                     return
                 
             print(f"{transition.state}\nletter read = {letter}")
-            print(f"stack = {self.stack}")
+            print(f"stack = {self.stack}\n")
 
             next_state = transition.state
             for state in self.states:
