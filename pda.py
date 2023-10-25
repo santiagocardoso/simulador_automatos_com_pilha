@@ -200,6 +200,8 @@ dot_format = generate_dot_format(states, start_state, final_states)
 # Create the automaton
 automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
 automaton.read_input()
+if(automaton.accept == False):
+    print("word denied!")
 
 #abrindo o site
 import time
