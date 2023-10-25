@@ -70,6 +70,8 @@ class AutomatonStack:
             if empty_movement:
                 print("-------------------------------")
                 print(f"empty movement\n")
+                
+                
                 new_input = self.input[count_letters - 1:]
                 new_stack = self.stack.copy()
 
@@ -81,8 +83,8 @@ class AutomatonStack:
                 new_automaton.read_input()
                 
                 if(new_automaton.accept == False):
-
                     print("stack deleted")
+                    
                 print(f"-------------------------------\n")
 
                 if new_automaton.accept:
@@ -130,8 +132,8 @@ class AutomatonStack:
             for state in self.states:
                 if next_state == state.name:
                     current_transitions = state.transitions
-
-        if next_state == self.final_state.name and len(self.stack) == 0 and count_letters == len(self.input):
+                    
+        if len(self.stack) == 0 and count_letters == len(self.input):
             print(f"Word accepted!\nStack = {self.stack}")
             self.accept = True
             return
@@ -235,3 +237,4 @@ time.sleep(5)  # Espere 5 segundos (você pode ajustar isso conforme necessário
 
 # Lembre-se de liberar os recursos do teclado
 keyboard.unhook_all()
+
