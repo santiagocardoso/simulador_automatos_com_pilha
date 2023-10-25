@@ -1,0 +1,40 @@
+{
+   "type":"PDA",
+   "pda":{
+      "states":{
+         "q1":[
+            {
+               "label":",,$",
+               "next":"q2"
+            }
+         ],
+         "q2":[
+            {
+               "label":"0,,0",
+               "next":"q2"
+            },
+            {
+               "label":"1,0,",
+               "next":"q3"
+            }
+         ],
+         "q3" : [
+             {
+             "label":"1,0,",
+             "next":"q3"
+             },
+             {
+             "label":" ,$, ",
+             "next":"q4"
+             }
+         ],
+         "q4" : []
+      }
+   },
+   "start":"q1",
+   "final":["q1","q4"],
+   "tests":{
+         "accept":"0011",
+         "reject":""
+   }
+}
