@@ -205,36 +205,35 @@ automaton.read_input()
 if(automaton.accept == False):
     print("word denied!")
 
-#abrindo o site
+# Open the website
 import time
 import keyboard 
 
 keyboard.press_and_release('win+r')
-time.sleep(1)  # Espere um pouco para que a caixa de diálogo "Executar" apareça
+time.sleep(1)  # Wait for dialog box "Executar" shows up
 keyboard.write('msedge')
 keyboard.press_and_release('enter')
-time.sleep(2)  # Espere o Edge abrir
+time.sleep(2)  # Wait for edge to open
 
-# Digite o URL do link e pressione Enter
+# Type de URL link and press enter
 link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
 keyboard.write(link_url)
 keyboard.press_and_release('enter')
 
 time.sleep(10)
-# Simule a pressão da tecla Shift
+# Simulate the shift key being pressed
 keyboard.press_and_release('tab')
 keyboard.press_and_release('tab')
 
-# Selecione todo o conteúdo (Ctrl+A)
+# Select all content with (Ctrl+a)
 keyboard.press_and_release('ctrl+a')
 
-# Apague o conteúdo pressionando a tecla Delete
+# Erase content with key delete
 keyboard.press_and_release('delete')
 keyboard.write(dot_format)
-# Feche o programa após um tempo
-time.sleep(5)  # Espere 5 segundos (você pode ajustar isso conforme necessário)
-#keyboard.press_and_release('alt+f4')  # Feche o Edge
+# Close the program after a few moments
+time.sleep(5) # Wait 5 seconds (this time can be adjusted conform your needs)
+#keyboard.press_and_release('alt+f4') # Close edge
 
-# Lembre-se de liberar os recursos do teclado
+# Free keyboard resources
 keyboard.unhook_all()
-
