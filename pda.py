@@ -10,7 +10,7 @@ Members:
 import sys
 import json
 
-# Recursion limit
+# Recustion limit
 sys.setrecursionlimit(4000)
 
 # Classes
@@ -132,6 +132,7 @@ class AutomatonStack:
             for state in self.states:
                 if next_state == state.name:
                     current_transitions = state.transitions
+                    break
                     
         if len(self.stack) == 0 and count_letters == len(self.input):
             print(f"Word accepted!\nStack = {self.stack}")
@@ -167,12 +168,13 @@ with open('automaton.json', 'r') as file:
     # Define the input
     input_string = data["tests"]["accept"]
 
-    # Define the start state and final state
+    # Define the start state and final states
+    final_states = []
     for state in states:
         if state.get_name() == data["start"]:
             start_state = state
-        if state.get_name() == data["final"]: # Still is only one state, it needs to be a list of final states
-            final_states = state
+        if state.get_name() in data["final"]: # Still is only one state, it needs to be a list of final states
+            final_states.append(state)
 
 # Write DOT file
 def format_transition(transition):
@@ -182,8 +184,14 @@ def format_transition(transition):
     return f'{symbol_read},{symbol_top_pull},{symbol_push}'
 
 def generate_dot_format(states, start_state, final_states):
-    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', f'node [shape = doublecircle];{final_states.get_name()};', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
-
+    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
+    
+    string = "node [shape = doublecircle];"
+    for final in final_states:
+        string += f"{final.get_name()}; "
+    
+    dot.insert(3, string)
+    
     for state in states:
         for transition in state.get_transitions():
             next_state = transition.state
@@ -197,6 +205,7 @@ def generate_dot_format(states, start_state, final_states):
 
 # Assuming you have already defined start_state, states, and final_states
 dot_format = generate_dot_format(states, start_state, final_states)
+print(dot_format)
 
 
 # Create the automaton
@@ -205,35 +214,37 @@ automaton.read_input()
 if(automaton.accept == False):
     print("word denied!")
 
-# Open the website
+#abrindo o site
+
 import time
 import keyboard 
 
 keyboard.press_and_release('win+r')
-time.sleep(1)  # Wait for dialog box "Executar" shows up
+time.sleep(1)  # Espere um pouco para que a caixa de diálogo "Executar" apareça
 keyboard.write('msedge')
 keyboard.press_and_release('enter')
-time.sleep(2)  # Wait for edge to open
+time.sleep(2)  # Espere o Edge abrir
 
-# Type de URL link and press enter
+# Digite o URL do link e pressione Enter
 link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
 keyboard.write(link_url)
 keyboard.press_and_release('enter')
 
 time.sleep(10)
-# Simulate the shift key being pressed
+# Simule a pressão da tecla Shift
 keyboard.press_and_release('tab')
 keyboard.press_and_release('tab')
 
-# Select all content with (Ctrl+a)
+# Selecione todo o conteúdo (Ctrl+A)
 keyboard.press_and_release('ctrl+a')
 
-# Erase content with key delete
+# Apague o conteúdo pressionando a tecla Delete
 keyboard.press_and_release('delete')
 keyboard.write(dot_format)
-# Close the program after a few moments
-time.sleep(5) # Wait 5 seconds (this time can be adjusted conform your needs)
-#keyboard.press_and_release('alt+f4') # Close edge
+# Feche o programa após um tempo
+time.sleep(5)  # Espere 5 segundos (você pode ajustar isso conforme necessário)
+#keyboard.press_and_release('alt+f4')  # Feche o Edge
 
-# Free keyboard resources
+# Lembre-se de liberar os recursos do teclado
 keyboard.unhook_all()
+
