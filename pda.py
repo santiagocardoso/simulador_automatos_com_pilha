@@ -55,16 +55,21 @@ class AutomatonStack:
     def read_input(self):
         current_transitions = self.start_state.transitions
         count_letters = 0
+        print(f"start stack = {self.stack}")
 
         for letter in self.input:
+            
             count_letters += 1
             empty_movement = False
 
             for transition in current_transitions:
                 if transition.symbol_read == "":
                     empty_movement = True
+                    break
 
             if empty_movement:
+                print("-------------------------------")
+                print(f"empty movement\n")
                 new_input = self.input[count_letters - 1:]
                 new_stack = self.stack.copy()
 
@@ -74,10 +79,17 @@ class AutomatonStack:
 
                 new_automaton = AutomatonStack(new_start_state, self.states, self.final_state, new_input, new_stack)
                 new_automaton.read_input()
+                
+                if(new_automaton.accept == False):
+
+                    print("stack deleted")
+                print(f"-------------------------------\n")
 
                 if new_automaton.accept:
                     self.accept = True
                     return
+                
+    
 
             for transition in current_transitions:
                 # Does not remove anything from the top but puts something on the stack
@@ -90,7 +102,10 @@ class AutomatonStack:
                     break
 
                 elif len(self.stack) == 0 and transition.symbol_top_pull != "":
+                    print(f"{transition.state}\nletter read = {letter}")
+                    print(f"stack = {self.stack}")
                     return
+                
 
                 # Just remove and don't put anything on the stack
                 elif transition.symbol_read == letter and self.stack[-1] == transition.symbol_top_pull and transition.symbol_push == "":
@@ -104,7 +119,12 @@ class AutomatonStack:
                     break
 
                 elif transition == current_transitions[-1]:
+                    print(f"{transition.state}\nletter read = {letter}")
+                    print(f"stack = {self.stack}")
                     return
+                
+            print(f"{transition.state}\nletter read = {letter}")
+            print(f"stack = {self.stack}")
 
             next_state = transition.state
             for state in self.states:
@@ -175,7 +195,7 @@ def generate_dot_format(states, start_state, final_states):
 
 # Assuming you have already defined start_state, states, and final_states
 dot_format = generate_dot_format(states, start_state, final_states)
-print(dot_format)
+
 
 # Create the automaton
 automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
