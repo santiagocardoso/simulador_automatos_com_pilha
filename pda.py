@@ -30,7 +30,6 @@ class Transition:
     def __str__(self):
         return f"Transition=('{self.symbol_read}','{self.symbol_top_pull}','{self.symbol_push}',next_state='{self.state}')"
 
-
 class State:
     def __init__(self, name, transitions, stack):
         self.name = name
@@ -97,8 +96,6 @@ class AutomatonStack:
                     self.accept = True
                     return
                 
-    
-
             for transition in current_transitions:
                 # Does not remove anything from the top but puts something on the stack
                 if transition.symbol_read == letter and transition.symbol_top_pull == "":
@@ -113,7 +110,6 @@ class AutomatonStack:
                     print(f"{transition.state}\nletter read = {letter}")
                     print(f"Stack = {self.stack}\n")
                     return
-                
 
                 # Just remove and don't put anything on the stack
                 elif transition.symbol_read == letter and self.stack[-1] == transition.symbol_top_pull and transition.symbol_push == "":
