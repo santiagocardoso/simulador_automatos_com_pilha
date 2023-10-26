@@ -7,10 +7,12 @@ Members:
 '''
 
 # Imports
+import platform
 import sys
 import json
 import time
 import keyboard 
+import os
 
 # Recustion limit
 sys.setrecursionlimit(4000)
@@ -220,31 +222,34 @@ if(automaton.accept == False):
     print("Word denied!")
 
 # Opening the website
-keyboard.press_and_release('win+r')
-time.sleep(1) # Wait for the dialog box "executar" to show up
-keyboard.write('msedge')
-keyboard.press_and_release('enter')
-time.sleep(2) # Wait for Edge to open
 
-# Type the URL link and press enter
-link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
-keyboard.write(link_url)
-keyboard.press_and_release('enter')
+if platform.system() == "Windows":
+    keyboard.press_and_release('win+r')
+    time.sleep(1) # Wait for the dialog box "executar" to show up
+    keyboard.write('msedge')
+    keyboard.press_and_release('enter')
+    time.sleep(2) # Wait for Edge to open
 
-time.sleep(10)
-# Simulate shift press
-keyboard.press_and_release('tab')
-keyboard.press_and_release('tab')
+    # Type the URL link and press enter
+    link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
+    keyboard.write(link_url)
+    keyboard.press_and_release('enter')
 
-# Select all content (Ctrl+A)
-keyboard.press_and_release('ctrl+a')
+    time.sleep(10)
+    # Simulate shift press
+    keyboard.press_and_release('tab')
+    keyboard.press_and_release('tab')
 
-# Erase the selected content with the key delete
-keyboard.press_and_release('delete')
-keyboard.write(dot_format)
-# Close the program after a while
-time.sleep(5)  # Wait 5 seconds (can be adjusted)
-#keyboard.press_and_release('alt+f4')  # Close Edge
+    # Select all content (Ctrl+A)
+    keyboard.press_and_release('ctrl+a')
 
-# Free keyboard resources
-keyboard.unhook_all()
+    # Erase the selected content with the key delete
+    keyboard.press_and_release('delete')
+    keyboard.write(dot_format)
+    # Close the program after a while
+    time.sleep(5)  # Wait 5 seconds (can be adjusted)
+    
+    #keyboard.press_and_release('alt+f4')  # Close Edge
+
+    # Free keyboard resources
+    keyboard.unhook_all()
