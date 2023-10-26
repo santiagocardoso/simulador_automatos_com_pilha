@@ -190,7 +190,7 @@ def format_transition(transition):
     return f'{symbol_read},{symbol_top_pull},{symbol_push}'
 
 def generate_dot_format(states, start_state, final_states):
-    dot = ['digraph G {', 'rankdir=LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi-> ' + start_state.get_name() + ';']
+    dot = ['digraph G {', 'rankdir = LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi -> ' + start_state.get_name() + ';']
     
     string = "node [shape = doublecircle];"
     for final in final_states:
@@ -250,3 +250,7 @@ if platform.system() == "Windows":
 
     # Free keyboard resources
     keyboard.unhook_all()
+elif platform.system() == "Linux":
+    print("Still no suport for Linux platform!\nAccepted platforms: Windows")
+else:
+    print("Still no suport for other platforms!\nAccepted platforms: Windows")
