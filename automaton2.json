@@ -2,37 +2,37 @@
    "type":"PDA",
    "pda":{
       "states":{
-         "q1":[
+         "s1":[
             {
                "label":",,$",
-               "next":"q2"
+               "next":"s2"
             }
          ],
-         "q2":[
+         "s2":[
             {
                "label":"0,,0",
-               "next":"q2"
+               "next":"s2"
             },
             {
                "label":"1,0,",
-               "next":"q3"
+               "next":"s3"
             }
          ],
-         "q3" : [
+         "s3" : [
              {
              "label":"1,0,",
-             "next":"q3"
+             "next":"s3"
              },
              {
              "label":",$,",
-             "next":"q4"
+             "next":"s4"
              }
          ],
-         "q4" : []
+         "s4" : []
       }
    },
-   "start":"q1",
-   "final":["q1","q4"],
+   "start":"s1",
+   "final":["s1","s4"],
    "tests":{
          "accept":"0011"
    }
