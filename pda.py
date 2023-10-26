@@ -17,7 +17,7 @@ import keyboard
 sys.setrecursionlimit(4000)
 
 # Set json file to open
-automaton_input = "automaton2.json"
+automaton_input = "automaton1.json"
 
 # Classes
 class Transition:
