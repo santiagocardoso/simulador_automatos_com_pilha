@@ -17,7 +17,7 @@ import keyboard
 sys.setrecursionlimit(4000)
 
 # Set json file to open
-automaton_input = "automaton1.json"
+automaton_input = "automaton2.json"
 
 # Classes
 class Transition:
@@ -212,7 +212,6 @@ def generate_dot_format(states, start_state, final_states):
 # Assuming you have already defined start_state, states, and final_states
 dot_format = generate_dot_format(states, start_state, final_states)
 print(dot_format)
-
 
 # Create the automaton
 automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
