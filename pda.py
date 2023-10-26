@@ -12,7 +12,6 @@ import sys
 import json
 import time
 import keyboard 
-import os
 
 # Recustion limit
 sys.setrecursionlimit(4000)
@@ -222,7 +221,6 @@ if(automaton.accept == False):
     print("Word denied!")
 
 # Opening the website
-
 if platform.system() == "Windows":
     keyboard.press_and_release('win+r')
     time.sleep(1) # Wait for the dialog box "executar" to show up

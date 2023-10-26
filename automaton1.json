@@ -31,7 +31,6 @@
    "start":"s0",
    "final":"s1",
    "tests":{
-         "accept":"abba",
-         "reject":""
+         "accept":"abba"
    }
 }

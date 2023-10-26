@@ -34,7 +34,6 @@
    "start":"q1",
    "final":["q1","q4"],
    "tests":{
-         "accept":"0011",
-         "reject":""
+         "accept":"0011"
    }
 }
