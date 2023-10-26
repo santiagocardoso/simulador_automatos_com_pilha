@@ -45,8 +45,7 @@ Create a JSON file with the following example:
    "start":"s0",
    "final":"s1",
    "tests":{
-         "accept":"abba",
-         "reject":""
+         "accept":"abba"
    }
 }
 ```
