@@ -19,6 +19,52 @@ sys.setrecursionlimit(4000)
 # Set json file to open
 automaton_input = "automaton1.json"
 
+
+# Write DOT file
+def format_transition(transition):
+    symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
+    symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
+    symbol_push = "ε" if transition.symbol_push == "" else transition.symbol_push
+    return f'{symbol_read},{symbol_top_pull},{symbol_push}'
+
+def generate_dot_format(states, start_state, final_states, currently_transition):
+    dot = ['digraph G {', 'rankdir = LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi -> ' + start_state.get_name() + ';']
+    
+    string = "node [shape = doublecircle];"
+    for final in final_states:
+        string += f"{final.get_name()}; "
+    
+    dot.insert(3, string)
+    
+    for state in states:
+        for transition in state.get_transitions():
+            next_state = transition.state
+            label = format_transition(transition)
+            
+            if transition == currently_transition:
+                dot.append(f'{state.get_name()} -> {next_state} [label = "{label}" color = "red"];')
+                
+            else:
+                dot.append(f'{state.get_name()} -> {next_state} [label = "{label}"];')
+
+    dot.append('}')
+
+    return '\n'.join(dot)
+
+def update_transition(dot):
+    # Select all content (Ctrl+A)
+    keyboard.press_and_release('ctrl+a')
+
+    # Erase the selected content with the key delete
+    keyboard.press_and_release('delete')
+    keyboard.write(dot)
+    time.sleep(5)  # Wait 5 seconds (can be adjusted)
+    
+    #keyboard.press_and_release('alt+f4')  # Close Edge
+
+    # Free keyboard resources
+    keyboard.unhook_all()
+
 # Classes
 class Transition:
     def __init__(self, symbol_read, symbol_top_pull, symbol_push, state):
@@ -129,6 +175,9 @@ class AutomatonStack:
                 
             print(f"{transition.state}\nletter read = {letter}")
             print(f"Stack = {self.stack}\n")
+            
+            dot = generate_dot_format(self.states, self.start_state, self.final_state, transition)
+            update_transition(dot)
 
             next_state = transition.state
             for state in self.states:
@@ -178,42 +227,10 @@ with open(automaton_input, 'r') as file:
         if state.get_name() in data["final"]: # Still is only one state, it needs to be a list of final states
             final_states.append(state)
 
-# Write DOT file
-def format_transition(transition):
-    symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
-    symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
-    symbol_push = "ε" if transition.symbol_push == "" else transition.symbol_push
-    return f'{symbol_read},{symbol_top_pull},{symbol_push}'
-
-def generate_dot_format(states, start_state, final_states):
-    dot = ['digraph G {', 'rankdir = LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi -> ' + start_state.get_name() + ';']
-    
-    string = "node [shape = doublecircle];"
-    for final in final_states:
-        string += f"{final.get_name()}; "
-    
-    dot.insert(3, string)
-    
-    for state in states:
-        for transition in state.get_transitions():
-            next_state = transition.state
-            label = format_transition(transition)
-
-            dot.append(f'{state.get_name()} -> {next_state} [label = "{label}"];')
-
-    dot.append('}')
-
-    return '\n'.join(dot)
 
 # Assuming you have already defined start_state, states, and final_states
-dot_format = generate_dot_format(states, start_state, final_states)
+dot_format = generate_dot_format(states, start_state, final_states, currently_transition = "")
 print(dot_format)
-
-# Create the automaton
-automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
-automaton.read_input()
-if(automaton.accept == False):
-    print("Word denied!")
 
 # Opening the website
 if platform.system() == "Windows":
@@ -250,3 +267,10 @@ elif platform.system() == "Linux":
     print("Still no suport for Linux platform!\nAccepted platforms: Windows")
 else:
     print("Still no suport for other platforms!\nAccepted platforms: Windows")
+    
+
+# Create the automaton
+automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
+automaton.read_input()
+if(automaton.accept == False):
+    print("Word denied!")
