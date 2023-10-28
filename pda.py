@@ -19,6 +19,52 @@ sys.setrecursionlimit(4000)
 # Set json file to open
 automaton_input = "automaton1.json"
 
+
+# Write DOT file
+def format_transition(transition):
+    symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
+    symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
+    symbol_push = "ε" if transition.symbol_push == "" else transition.symbol_push
+    return f'{symbol_read},{symbol_top_pull},{symbol_push}'
+
+def generate_dot_format(states, start_state, final_states, currently_transition):
+    dot = ['digraph G {', 'rankdir = LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi -> ' + start_state.get_name() + ';']
+    
+    string = "node [shape = doublecircle];"
+    for final in final_states:
+        string += f"{final.get_name()}; "
+    
+    dot.insert(3, string)
+    
+    for state in states:
+        for transition in state.get_transitions():
+            next_state = transition.state
+            label = format_transition(transition)
+            
+            if transition == currently_transition:
+                dot.append(f'{state.get_name()} -> {next_state} [label = "{label}" color = "red"];')
+                
+            else:
+                dot.append(f'{state.get_name()} -> {next_state} [label = "{label}"];')
+
+    dot.append('}')
+
+    return '\n'.join(dot)
+
+def update_transition(dot):
+    # Select all content (Ctrl+A)
+    keyboard.press_and_release('ctrl+a')
+
+    # Erase the selected content with the key delete
+    keyboard.press_and_release('delete')
+    keyboard.write(dot)
+    time.sleep(3)  # Wait 3 seconds (can be adjusted)
+    
+    #keyboard.press_and_release('alt+f4')  # Close Edge
+
+    # Free keyboard resources
+    keyboard.unhook_all()
+
 # Classes
 class Transition:
     def __init__(self, symbol_read, symbol_top_pull, symbol_push, state):
@@ -59,6 +105,7 @@ class AutomatonStack:
 
     def read_input(self):
         current_transitions = self.start_state.transitions
+        current_state = self.start_state
         count_letters = 0
         print(f"Start stack = {self.stack}")
 
@@ -70,11 +117,34 @@ class AutomatonStack:
             for transition in current_transitions:
                 if transition.symbol_read == "":
                     empty_movement = True
+                    
+                    if not transition.symbol_push and not transition.symbol_top_pull:
+                        break
+                    
+                    elif transition.symbol_push and not transition.symbol_top_pull:
+                        self.stack.append(transition.symbol_push)
+                    
+                    if len(self.stack) == 0:
+                        break
+                        
+                    elif transition.symbol_top_pull == self.stack[-1] and not transition.symbol_push:
+                        self.stack.pop()
+                        
+                    elif transition.symbol_push and transition.symbol_top_pull == self.stack[-1]:
+                        self.stack.pop()
+                        self.stack.append(transition.symbol_push)
+                    
+                    print(f"at {current_state.get_name()}\nletter read = ε\ngo to {transition.state}")
+                    print(f"Stack = {self.stack}\n")
+                    
                     break
 
             if empty_movement:
+        
                 print("-------------------------------")
                 print(f"Empty movement!\n")
+                dot = generate_dot_format(self.states, self.states[0], self.final_state, transition)
+                update_transition(dot)
                 
                 
                 new_input = self.input[count_letters - 1:]
@@ -107,7 +177,7 @@ class AutomatonStack:
                     break
 
                 elif len(self.stack) == 0 and transition.symbol_top_pull != "":
-                    print(f"{transition.state}\nletter read = {letter}")
+                    print(f"at {current_state.get_name()}\nletter read = {letter}\ngo to {transition.state}")
                     print(f"Stack = {self.stack}\n")
                     return
 
@@ -123,20 +193,73 @@ class AutomatonStack:
                     break
 
                 elif transition == current_transitions[-1]:
-                    print(f"{transition.state}\nletter read = {letter}")
+                    print(f"at {current_state.get_name()}\nletter read = {letter}\ngo to {transition.state}")
                     print(f"Stack = {self.stack}\n")
-                    return
+                    return    
+            
+            if len(current_transitions) == 0:
+                print(f"{current_state} dont have more transitions")
+                return
                 
-            print(f"{transition.state}\nletter read = {letter}")
+            print(f"at {current_state.get_name()}\nletter read = {letter}\ngo to {transition.state}")
             print(f"Stack = {self.stack}\n")
+            
+            dot = generate_dot_format(self.states, self.states[0], self.final_state, transition)
+            update_transition(dot)
 
             next_state = transition.state
             for state in self.states:
                 if next_state == state.name:
                     current_transitions = state.transitions
+                    current_state = state
+                    break
+            
+            
+        
+        
+        #empty movement at the end of the word        
+        for transition in current_transitions:
+            if transition.symbol_read == "":
+                empty_movement = True
+                
+                #&,&,&  &,&,a   &,a,&  &,a,a
+                
+                if not transition.symbol_push and not transition.symbol_top_pull:
+                    break
+                
+                elif transition.symbol_push and not transition.symbol_top_pull:
+                    self.stack.append(transition.symbol_push)
+                
+                if len(self.stack) == 0:
                     break
                     
+                elif transition.symbol_top_pull == self.stack[-1] and transition.symbol_push == "":
+                    self.stack.pop()
+                    
+                elif transition.symbol_push and transition.symbol_top_pull == self.stack[-1]:
+                    self.stack.pop()
+                    self.stack.append(transition.symbol_push)
+                    
+                print(f"{transition.state}\nletter read = ε")
+                print(f"Stack = {self.stack}\n")
+                dot = generate_dot_format(self.states, self.states[0], self.final_state, transition)
+                update_transition(dot)     
+                break
+            
+        
         if len(self.stack) == 0 and count_letters == len(self.input):
+            
+            import tkinter as tk
+            from tkinter import messagebox
+            
+            # Crie uma janela principal (pode ser invisível)
+            root = tk.Tk()
+            root.withdraw()  # Torna a janela invisível
+            
+            # Exiba uma caixa de diálogo de aviso
+            messagebox.showinfo(":D", "Word accepted!")
+            
+
             print(f"Word accepted!\nStack = {self.stack}")
             self.accept = True
             return
@@ -178,42 +301,11 @@ with open(automaton_input, 'r') as file:
         if state.get_name() in data["final"]: # Still is only one state, it needs to be a list of final states
             final_states.append(state)
 
-# Write DOT file
-def format_transition(transition):
-    symbol_read = "ε" if transition.symbol_read == "" else transition.symbol_read
-    symbol_top_pull = "ε" if transition.symbol_top_pull == "" else transition.symbol_top_pull
-    symbol_push = "ε" if transition.symbol_push == "" else transition.symbol_push
-    return f'{symbol_read},{symbol_top_pull},{symbol_push}'
 
-def generate_dot_format(states, start_state, final_states):
-    dot = ['digraph G {', 'rankdir = LR;', 'size = "8.5"', '', 'node [shape = none]; qi', 'node [shape = circle];', '', 'qi -> ' + start_state.get_name() + ';']
-    
-    string = "node [shape = doublecircle];"
-    for final in final_states:
-        string += f"{final.get_name()}; "
-    
-    dot.insert(3, string)
-    
-    for state in states:
-        for transition in state.get_transitions():
-            next_state = transition.state
-            label = format_transition(transition)
-
-            dot.append(f'{state.get_name()} -> {next_state} [label = "{label}"];')
-
-    dot.append('}')
-
-    return '\n'.join(dot)
 
 # Assuming you have already defined start_state, states, and final_states
-dot_format = generate_dot_format(states, start_state, final_states)
-print(dot_format)
+dot_format = generate_dot_format(states, start_state, final_states, currently_transition = "")
 
-# Create the automaton
-automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
-automaton.read_input()
-if(automaton.accept == False):
-    print("Word denied!")
 
 # Opening the website
 if platform.system() == "Windows":
@@ -221,7 +313,7 @@ if platform.system() == "Windows":
     time.sleep(1) # Wait for the dialog box "executar" to show up
     keyboard.write('msedge')
     keyboard.press_and_release('enter')
-    time.sleep(2) # Wait for Edge to open
+    time.sleep(3) # Wait for Edge to open
 
     # Type the URL link and press enter
     link_url = 'https://dreampuf.github.io/GraphvizOnline/#digraph%20G%20%7B%0A%0A%20%20subgraph%20cluster_0%20%7B%0A%20%20%20%20style%3Dfilled%3B%0A%20%20%20%20color%3Dlightgrey%3B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%2Ccolor%3Dwhite%5D%3B%0A%20%20%20%20a0%20-%3E%20a1%20-%3E%20a2%20-%3E%20a3%3B%0A%20%20%20%20label%20%3D%20%22process%20%231%22%3B%0A%20%20%7D%0A%0A%20%20subgraph%20cluster_1%20%7B%0A%20%20%20%20node%20%5Bstyle%3Dfilled%5D%3B%0A%20%20%20%20b0%20-%3E%20b1%20-%3E%20b2%20-%3E%20b3%3B%0A%20%20%20%20label%20%3D%20%22process%20%232%22%3B%0A%20%20%20%20color%3Dblue%0A%20%20%7D%0A%20%20start%20-%3E%20a0%3B%0A%20%20start%20-%3E%20b0%3B%0A%20%20a1%20-%3E%20b3%3B%0A%20%20b2%20-%3E%20a3%3B%0A%20%20a3%20-%3E%20a0%3B%0A%20%20a3%20-%3E%20end%3B%0A%20%20b3%20-%3E%20end%3B%0A%0A%20%20start%20%5Bshape%3DMdiamond%5D%3B%0A%20%20end%20%5Bshape%3DMsquare%5D%3B%0A%7D'
@@ -250,3 +342,19 @@ elif platform.system() == "Linux":
     print("Still no suport for Linux platform!\nAccepted platforms: Windows")
 else:
     print("Still no suport for other platforms!\nAccepted platforms: Windows")
+    
+
+# Create the automaton
+automaton = AutomatonStack(start_state, states, final_states, input_string, stack)
+automaton.read_input()
+if(automaton.accept == False):
+    import tkinter as tk
+    from tkinter import messagebox
+    
+    # Crie uma janela principal (pode ser invisível)
+    root = tk.Tk()
+    root.withdraw()  # Torna a janela invisível
+    
+    # Exiba uma caixa de diálogo de aviso
+    messagebox.showerror(":(", "Word denied!")
+    print("Word denied!")
